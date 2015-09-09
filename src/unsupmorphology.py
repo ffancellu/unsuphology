@@ -11,26 +11,20 @@ import time
 logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.INFO)
 
 model = VectorModel.getVectorModel()
+vocabulary={}
 vocabulary = model.vocab.keys()
-
 
 start = time.time()
 
-prefixes, suffixes = Fixes.generateFixes(vocabulary)
+prefixes, suffixes = Fixes.generateFixes(vocabulary, True)
+
+
+
+print "Time: "+str(time.time()-start)
 
 print len(prefixes)
 print len(suffixes)
-print "Time: "+str(time.time()-start)
 
-
-# prefixes = []
-# suffixes = []
-# for word in vocabulary:
-#    for x in range (1, Cons.MAXFIX):
-#        if len(word[x:]) > 0:
-#            prefixes.append(word[:x])
-#        if len(word[:-x]) > 0:
-#            suffixes.append(word[x:])
 
 
 
