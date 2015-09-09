@@ -14,7 +14,7 @@ def getVectorModel(generateNew=False):
 
 
 def generateModel():
-    with open("orwell.txt", "r") as myfile:
+    with open(Cons.DATAFILENAME, "r") as myfile:
         documents = re.sub('#+', ' ', myfile.read()).replace('\n', '#').replace('\'', '').lower()
     documents = re.sub('[^a-zA-Z#]+', ' ', documents).split('#')
 

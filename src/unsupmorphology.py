@@ -35,6 +35,6 @@ print "Time: "+str(time.time()-start)
 
 
 
-print model.most_similar(positive=['winston', 'love'], negative=['war'])
-print model.doesnt_match("winston julia brother goldstein".split())
-print model.similarity("winston", "julia")
+#print model.most_similar(positive=['winston', 'love'], negative=['war'])
+#print model.doesnt_match("winston julia brother goldstein".split())
+#print model.similarity("winston", "julia")
