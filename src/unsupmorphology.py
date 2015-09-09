@@ -17,7 +17,7 @@ vocabulary = model.vocab.keys()
 
 start = time.time()
 
-prefixes, suffixes = Fixes.generateFixes(vocabulary, True)
+prefixes, suffixes = Fixes.generateFixes(vocabulary)
 
 
 print "Time: "+str(time.time()-start)

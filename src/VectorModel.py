@@ -17,7 +17,7 @@ def generateModel():
     with open(Cons.DATAFILENAME, "r") as myfile:
         #documents = re.sub('#+', ' ', myfile.read()).replace('\n', '#').replace('\'', '').lower()
         #documents = re.sub('[^a-zA-Z#]+', ' ', documents).split('#')
-        documents = myfile.read().split('\n').lower()
+        documents = myfile.read().lower().split('\n')
 
     texts = [word.split() for word in documents]
     model = gensim.models.Word2Vec(texts, min_count=Cons.MINOCCURENCES, size=Cons.NNSIZE, workers=1)
