@@ -6,6 +6,7 @@ import logging
 import VectorModel
 import Cons, Fixes
 import time
+import random
 
 # logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.INFO)
@@ -17,7 +18,6 @@ vocabulary = model.vocab.keys()
 start = time.time()
 
 prefixes, suffixes = Fixes.generateFixes(vocabulary, True)
-
 
 
 print "Time: "+str(time.time()-start)

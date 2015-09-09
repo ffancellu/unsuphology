@@ -3,6 +3,7 @@ __author__ = 'Fortress'
 import Cons
 import pickle
 import os
+import random
 
 
 def generateFixes(vocabulary, generateNew=False):
@@ -77,7 +78,7 @@ def generateNewFixes(vocabulary):
             if len(support) >= Cons.RARERULES:
                 if pre1 not in prefixes2:
                     prefixes2[pre1] = {}
-                prefixes2[pre1][pre2] = support
+                prefixes2[pre1][pre2] = downsample(support)
 
     prefixes = prefixes2
 
@@ -89,7 +90,7 @@ def generateNewFixes(vocabulary):
             if len(support) >= Cons.RARERULES:
                 if pre1 not in suffixes2:
                     suffixes2[pre1] = {}
-                suffixes2[pre1][pre2] = support
+                suffixes2[pre1][pre2] = downsample(support)
 
     suffixes = suffixes2
 
@@ -98,3 +99,8 @@ def generateNewFixes(vocabulary):
         pickle.dump([prefixes, suffixes], f)
 
     return prefixes, suffixes
+
+def downsample(supportset):
+    if len(supportset)<Cons.MAXSUPPORTSIZE:
+        return supportset
+    return random.sample(supportset, Cons.MAXSUPPORTSIZE)
