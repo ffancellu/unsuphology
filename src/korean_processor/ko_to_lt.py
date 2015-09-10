@@ -1,30 +1,30 @@
 #-*- coding:utf-8 -*-
 
 from bs4 import BeautifulSoup
-from ConfigParser import ConfigParser
 import conversion as Conv
 import codecs
 import os
 
-config = ConfigParser()
-config.read("../config.cfg")
+KOREAN_DATA_FOLDER="/Users/ffancellu/Documents/Research/Korean_corpora/raw/generality/speech95"
+KOREAN_OUTPUT_PATH="/Users/ffancellu/git/unsuphology/src/models/korean_corpus_all.txt"
 
-def create_corpus(ko_dir):
+def create_corpus():
+    o = codecs.open(KOREAN_OUTPUT_PATH,'wb','utf8')
 
-    o = codecs.open(config.get("korean","output"),'wb','utf8')
-
-    for f in os.listdir(ko_dir):
-        ko_filepath = '%s/%s' % (ko_dir,f)
-        i = codecs.open(ko_filepath,'rb','cp949').read()
-        soup = BeautifulSoup(i)
-        for s in soup.find_all("tdmsfiletext"):
-            o.write(s.text)
-
+    for f in os.listdir(KOREAN_DATA_FOLDER):
+        ko_filepath = '%s/%s' % (KOREAN_DATA_FOLDER,f)
+        try:
+            i = codecs.open(ko_filepath,'rb','cp949').read()
+            soup = BeautifulSoup(i)
+            for s in soup.find_all("tdmsfiletext"):
+                o.write(s.text)
+        except(UnicodeDecodeError):
+            pass
     o.close()
 
 def transform():
 
-    ko = codecs.open(config.get("korean","output"),'rb','utf8')
+    ko = codecs.open(KOREAN_OUTPUT_PATH,'rb','utf8')
     for line in ko:
         words = line.split()
         words_conv = []
@@ -35,5 +35,5 @@ def transform():
             
 
 if __name__=="__main__":
-    # create_corpus(config.get("korean","input"))
+    # create_corpus()
     transform()

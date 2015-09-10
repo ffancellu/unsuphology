@@ -17,18 +17,18 @@ vocabulary = model.vocab.keys()
 
 start = time.time()
 
-prefixes, suffixes = Fixes.generateFixes(vocabulary)
+# prefixes, suffixes = Fixes.generateFixes(vocabulary,True)
 
 
-print "Time: "+str(time.time()-start)
+# print "Time: "+str(time.time()-start)
 
-print len(prefixes)
-print len(suffixes)
-
-
+# print len(prefixes)
+# print len(suffixes)
 
 
-
-#print model.most_similar(positive=['winston', 'love'], negative=['war'])
-#print model.doesnt_match("winston julia brother goldstein".split())
-#print model.similarity("winston", "julia")
+# print model.most_similar(positive=['winston', 'love'], negative=['war'])
+# print model.doesnt_match("winston julia brother goldstein".split())
+print model.similarity("migukgwa","irakeuyi")
+print model.similarity("migukgwa","hanguk")
+print model.similarity("migukgwa","hwarbarhan")
+print model.similarity("migukgwa","jasinyi")
