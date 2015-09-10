@@ -13,15 +13,13 @@ model = VectorModel.getVectorModel()
 vocabulary = {}
 vocabulary = model.vocab.keys()
 
-start = time.time()
 
-prefixes, suffixes = Fixes.generateFixes(vocabulary,True)
+prefixes, suffixes = Fixes.generateFixes(vocabulary)
 
 
 rules = GenerateRules.generate(prefixes, suffixes, model)
 print rules
 
 
-print "Time: " + str(time.time() - start)
 
 

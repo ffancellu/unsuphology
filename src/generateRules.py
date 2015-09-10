@@ -17,9 +17,14 @@ def generate(prefixes, suffixes, model):
 
 
 def computeHitRate(support, model):
-    for pair in support:
-        #cos = model.similarity(pair[1])
-        print 1
+    for pair1 in support:
+        for pair2 in support:
+            if pair1!=pair2:
+                print pair1+pair2
+                print model[pair1[0]]
+                #print dot(matutils.unitvec(self[w1]), matutils.unitvec(self[w2]))
+                #cos = model.similarity(pair[1])
+
 
 
     for word in model.vocab.keys():

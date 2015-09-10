@@ -43,6 +43,9 @@ def generateNewFixes(vocabulary):
                                 tmp = pre1
                                 pre1 = pre2
                                 pre2 = tmp
+                                tmp = w1
+                                w1=w2
+                                w2=w1
 
                             if pre1 not in prefixes:
                                 prefixes[pre1] = {}
@@ -65,6 +68,9 @@ def generateNewFixes(vocabulary):
                                 tmp = pre1
                                 pre1 = pre2
                                 pre2 = tmp
+                                tmp = w1
+                                w1=w2
+                                w2=w1
 
                             if pre1 not in suffixes:
                                 suffixes[pre1] = {}
