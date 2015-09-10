@@ -20,6 +20,6 @@ def generateModel():
         documents = myfile.read().lower().split('\n')
 
     texts = [word.split() for word in documents]
-    model = gensim.models.Word2Vec(texts, min_count=Cons.MINOCCURENCES, size=Cons.NNSIZE, workers=1)
+    model = gensim.models.Word2Vec(texts, min_count=Cons.MINOCCURENCES, size=Cons.NNSIZE, workers=Cons.NUMCORES)
     model.save(Cons.MODELFILENAME)
     return model

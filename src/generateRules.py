@@ -9,11 +9,13 @@ def generate(prefixes, suffixes, model):
     rules = []
     for pre1, r in prefixes.iteritems():
         for pre2, support in r.iteritems():
+            break
             rules.append(["prefix", pre1, pre2, computeHitRate(support, model)])
             #print ["prefix", pre1, pre2, computeHitRate(support, model)]
     for pre1, r in suffixes.iteritems():
         for pre2, support in r.iteritems():
             rules.append(["suffix", pre1, pre2, computeHitRate(support, model)])
+
             print ["suffix", pre1, pre2, computeHitRate(support, model)]
 
     return rules
@@ -32,7 +34,6 @@ def computeHitRate(support, model):
                     kthneighbor[pair1[1]] = getKthClosestNeighbor(pair1[1], model, Cons.HITTHRESHOLD)
                 if cos>kthneighbor[pair1[1]]:
                     hitrate+=1
-                    #print str(cos) +" "+ str(kthneighbor[pair1[1]])
                 sum+=1
 
     return hitrate/sum

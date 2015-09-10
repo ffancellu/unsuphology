@@ -17,3 +17,4 @@ MAXSUPPORTSIZE = 100 #maximal size of support set. In Soricut paper equals 1000.
 
 MEANINGPRESERVINGTHRESHOLD = 0.5 #if cosine similarity of the support set of the rule is smaller than this criterio, do not consider it
 
+NUMCORES=1 #number of threads that can be used for model creation
