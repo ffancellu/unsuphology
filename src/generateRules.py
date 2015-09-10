@@ -1,6 +1,6 @@
 __author__ = "Tom Kocmi"
 
-import Cons, Queue
+import Cons, Queue, gensim, numpy
 
 kthneighbor = {}
 
@@ -21,8 +21,8 @@ def computeHitRate(support, model):
         for pair2 in support:
             if pair1!=pair2:
                 print pair1+pair2
-                print model[pair1[0]]
-                #print dot(matutils.unitvec(self[w1]), matutils.unitvec(self[w2]))
+                print pair1[0]+" "+pair1[1]+" "+pair2[0]+" "+pair2[1]
+                print numpy.dot(gensim.matutils.unitvec(model[pair1[0]]), gensim.matutils.unitvec(model[pair2[0]]))
                 #cos = model.similarity(pair[1])
 
 
