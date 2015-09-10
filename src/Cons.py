@@ -1,10 +1,11 @@
 __author__="Tom Kocmi"
 
-CORPUSNAME = "EN"
+CORPUSNAME = "KO"
 
-MODELFILENAME = "models/VectorModel-"+CORPUSNAME+".data" #model filename
-FIXESFILENAME = "models/Fixes-"+CORPUSNAME+".data" #filename of saved prefixes and suffixes
-DATAFILENAME = "models/"+CORPUSNAME+".txt" #filename of training data
+RULESFILENAME = "models/RulesTxt-%s.data" % (CORPUSNAME)
+MODELFILENAME = "models/VectorModel-%s.data" % (CORPUSNAME) #model filename
+FIXESFILENAME = "models/Fixes-%s.data" % (CORPUSNAME) #filename of saved prefixes and suffixes
+DATAFILENAME = "models/%s.txt" % (CORPUSNAME) #filename of training data
 
 NNSIZE = 100 #size of the word vectors
 MINOCCURENCES = 2 #minimum necessary number of occurences of word in the document to allow it in vocabulary
