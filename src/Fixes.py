@@ -21,7 +21,7 @@ def generateNewFixes(vocabulary):
 
     for i in range(0, len(vocabulary)):
         if i % 100 == 0:
-            print "creating _fixes, progress: " + str(i) + "/" + str(len(vocabulary))
+            print "creating _prefixes and suffixes, progress: " + str(i) + " out of " + str(len(vocabulary))
         for j in range(0, len(vocabulary)):
             if i < j:
                 if len(vocabulary[i]) < len(vocabulary[j]):
@@ -31,36 +31,40 @@ def generateNewFixes(vocabulary):
                     w1 = vocabulary[j]
                     w2 = vocabulary[i]
                 # extract prefixes
-                for fix in range(len(w1) + 1, max(1, len(w1) - Cons.MAXFIX), -1):
-                    if w1[-fix:] == w2[-fix:]:
-                        if len(w2[:-fix]) <= Cons.MAXFIX:
-                            if (len(w1[:-fix]) == len(w2[:-fix])) and w1[:-fix] > w2[:-fix]:
-                                pre1 = w2[:-fix]
-                                pre2 = w1[:-fix]
-                            else:
-                                pre1 = w1[:-fix]
-                                pre2 = w2[:-fix]
+                for fix in range(1, len(w1) + 1):
+                    if w1[len(w1) - fix] != w2[len(w2) - fix]:
+                        if fix == 1:
+                            break
+
+                        pre1 = w1[:-fix + 1]
+                        pre2 = w2[:-fix + 1]
+                        if len(pre2) <= Cons.MAXFIX:
+                            if (len(pre1) == len(pre2)) and pre1 > pre2:
+                                tmp = pre1
+                                pre1 = pre2
+                                pre2 = tmp
 
                             if pre1 not in prefixes:
                                 prefixes[pre1] = {}
                             if pre2 not in prefixes[pre1]:
-                                # prefixes[pre1][pre2] = 1
                                 prefixes[pre1][pre2] = [[w1, w2]]
                             else:
-                                # prefixes[pre1][pre2] += 1
                                 prefixes[pre1][pre2].append([w1, w2])
                         break
 
                 # extract suffixes
-                for fix in range(len(w1) + 1, max(1, len(w1) - Cons.MAXFIX), -1):
-                    if w1[:fix] == w2[:fix]:
-                        if len(w2[fix:]) <= Cons.MAXFIX:
-                            if (len(w1[fix:]) == len(w2[fix:])) and w1[fix:] > w2[fix:]:
-                                pre1 = w2[fix:]
-                                pre2 = w1[fix:]
-                            else:
-                                pre1 = w1[fix:]
-                                pre2 = w2[fix:]
+                for fix in range(0, len(w1)):
+                    if w1[fix] != w2[fix]:
+                        if fix == 0:
+                            break
+
+                        pre1 = w1[fix:]
+                        pre2 = w2[fix:]
+                        if len(pre2) <= Cons.MAXFIX:
+                            if (len(pre1) == len(pre2)) and pre1 > pre2:
+                                tmp = pre1
+                                pre1 = pre2
+                                pre2 = tmp
 
                             if pre1 not in suffixes:
                                 suffixes[pre1] = {}
@@ -68,7 +72,7 @@ def generateNewFixes(vocabulary):
                                 suffixes[pre1][pre2] = [[w1, w2]]
                             else:
                                 suffixes[pre1][pre2].append([w1, w2])
-                            break
+                        break
 
     # remove rare prefix rules
     prefixes2 = {}
@@ -100,7 +104,8 @@ def generateNewFixes(vocabulary):
 
     return prefixes, suffixes
 
+
 def downsample(supportset):
-    if len(supportset)<Cons.MAXSUPPORTSIZE:
+    if len(supportset) < Cons.MAXSUPPORTSIZE:
         return supportset
     return random.sample(supportset, Cons.MAXSUPPORTSIZE)
