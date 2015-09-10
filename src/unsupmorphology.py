@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 __author__ = "Tom Kocmi"
 
 import logging
@@ -14,8 +15,7 @@ vocabulary = {}
 vocabulary = model.vocab.keys()
 
 
-prefixes, suffixes = Fixes.generateFixes(vocabulary, True)
-
+prefixes, suffixes = Fixes.generateFixes(vocabulary)
 
 rules = GenerateRules.generate(prefixes, suffixes, model)
 print rules
