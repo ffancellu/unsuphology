@@ -31,54 +31,70 @@ def generateNewFixes(vocabulary):
                     w1 = vocabulary[j]
                     w2 = vocabulary[i]
                 # extract prefixes
+                addRule = True
+                f = 0
                 for fix in range(1, len(w1) + 1):
                     if w1[len(w1) - fix] != w2[len(w2) - fix]:
                         if fix == 1:
-                            break
-
-                        pre1 = w1[:-fix + 1]
-                        pre2 = w2[:-fix + 1]
-                        if len(pre2) <= Cons.MAXFIX:
-                            if (len(pre1) == len(pre2)) and pre1 > pre2:
-                                tmp = pre1
-                                pre1 = pre2
-                                pre2 = tmp
-                                tmp = w1
-                                w1=w2
-                                w2=tmp
-
-                            if pre1 not in prefixes:
-                                prefixes[pre1] = {}
-                            if pre2 not in prefixes[pre1]:
-                                prefixes[pre1][pre2] = [[w1, w2]]
-                            else:
-                                prefixes[pre1][pre2].append([w1, w2])
+                            addRule = False
                         break
+                    f+=1
 
+                if addRule:
+                    if f==len(w1):
+                        pre1 = ""
+                        pre2 = w2[:-f]
+                    else:
+                        pre1 = w1[:-f]
+                        pre2 = w2[:-f]
+
+
+                    if len(pre2) <= Cons.MAXFIX:
+                        if (len(pre1) == len(pre2)) and pre1 > pre2:
+                            tmp = pre1
+                            pre1 = pre2
+                            pre2 = tmp
+                            tmp = w1
+                            w1 = w2
+                            w2 = tmp
+
+                        if pre1 not in prefixes:
+                            prefixes[pre1] = {}
+                        if pre2 not in prefixes[pre1]:
+                            prefixes[pre1][pre2] = [[w1, w2]]
+                        else:
+                            prefixes[pre1][pre2].append([w1, w2])
                 # extract suffixes
+                addRule = True
+                f=0
                 for fix in range(0, len(w1)):
                     if w1[fix] != w2[fix]:
                         if fix == 0:
-                            break
-
-                        pre1 = w1[fix:]
-                        pre2 = w2[fix:]
-                        if len(pre2) <= Cons.MAXFIX:
-                            if (len(pre1) == len(pre2)) and pre1 > pre2:
-                                tmp = pre1
-                                pre1 = pre2
-                                pre2 = tmp
-                                tmp = w1
-                                w1=w2
-                                w2=tmp
-
-                            if pre1 not in suffixes:
-                                suffixes[pre1] = {}
-                            if pre2 not in suffixes[pre1]:
-                                suffixes[pre1][pre2] = [[w1, w2]]
-                            else:
-                                suffixes[pre1][pre2].append([w1, w2])
+                            addRule = False
                         break
+                    f+=1
+                if addRule:
+                    if f==len(w1):
+                        pre1 = ""
+                        pre2 = w2[f:]
+                    else:
+                        pre1 = w1[f:]
+                        pre2 = w2[f:]
+                    if len(pre2) <= Cons.MAXFIX:
+                        if (len(pre1) == len(pre2)) and pre1 > pre2:
+                            tmp = pre1
+                            pre1 = pre2
+                            pre2 = tmp
+                            tmp = w1
+                            w1 = w2
+                            w2 = tmp
+
+                        if pre1 not in suffixes:
+                            suffixes[pre1] = {}
+                        if pre2 not in suffixes[pre1]:
+                            suffixes[pre1][pre2] = [[w1, w2]]
+                        else:
+                            suffixes[pre1][pre2].append([w1, w2])
 
     # remove rare prefix rules
     prefixes2 = {}

@@ -14,7 +14,7 @@ vocabulary = {}
 vocabulary = model.vocab.keys()
 
 
-prefixes, suffixes = Fixes.generateFixes(vocabulary)
+prefixes, suffixes = Fixes.generateFixes(vocabulary, True)
 
 
 rules = GenerateRules.generate(prefixes, suffixes, model)

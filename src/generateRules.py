@@ -4,31 +4,39 @@ import Cons, Queue, gensim, numpy
 
 kthneighbor = {}
 
+
 def generate(prefixes, suffixes, model):
     rules = []
     for pre1, r in prefixes.iteritems():
         for pre2, support in r.iteritems():
             rules.append(["prefix", pre1, pre2, computeHitRate(support, model)])
+            #print ["prefix", pre1, pre2, computeHitRate(support, model)]
     for pre1, r in suffixes.iteritems():
         for pre2, support in r.iteritems():
             rules.append(["suffix", pre1, pre2, computeHitRate(support, model)])
+            print ["suffix", pre1, pre2, computeHitRate(support, model)]
 
     return rules
 
 
 def computeHitRate(support, model):
+    hitrate=0
+    sum = 0
     for pair1 in support:
         for pair2 in support:
-            if pair1!=pair2:
-                print pair1+pair2
-                print pair1[0]+" "+pair1[1]+" "+pair2[0]+" "+pair2[1]
-                print numpy.dot(gensim.matutils.unitvec(model[pair1[0]]), gensim.matutils.unitvec(model[pair2[0]]))
-                #cos = model.similarity(pair[1])
+            if pair1 != pair2:
+                diff = numpy.subtract(model[pair2[1]], model[pair2[0]])
+                cos = numpy.dot(gensim.matutils.unitvec(model[pair1[1]]), gensim.matutils.unitvec(numpy.add(model[pair1[0]],diff)))
 
+                if pair1[1] not in kthneighbor:
+                    kthneighbor[pair1[1]] = getKthClosestNeighbor(pair1[1], model, Cons.HITTHRESHOLD)
+                if cos>kthneighbor[pair1[1]]:
+                    hitrate+=1
+                    #print str(cos) +" "+ str(kthneighbor[pair1[1]])
+                sum+=1
 
+    return hitrate/sum
 
-    for word in model.vocab.keys():
-        kthneighbor[word] = getKthClosestNeighbor(word, model, Cons.HITTHRESHOLD)
 
 
 def getKthClosestNeighbor(word, model, K):

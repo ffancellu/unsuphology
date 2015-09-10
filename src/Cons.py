@@ -14,4 +14,5 @@ RARERULES = 3 #minimal number of pairs in support set of the rule
 HITTHRESHOLD = 10
 MAXSUPPORTSIZE = 100 #maximal size of support set. In Soricut paper equals 1000. Downsample if more supports
 
+MEANINGPRESERVINGTHRESHOLD = 0.5 #if cosine similarity of the support set of the rule is smaller than this criterio, do not consider it
 
