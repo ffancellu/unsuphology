@@ -18,7 +18,7 @@ model = VectorModel.getVectorModel()  # this will load existing model
 # if the _fixes already exist it will load them from file instead of generating new ones.
 # In case that you want to forse it to generate, put True as a second parameter
 
-#prefixes, suffixes = Fixes.generateFixes(model.vocab.keys())
+# prefixes, suffixes = Fixes.generateFixes(model.vocab.keys())
 
 
 
@@ -29,4 +29,3 @@ print model.doesnt_match("winston julia brother goldstein".split())
 print model.similarity("winston", "julia")
 
 print "Time: " + str(time.time() - start)
-

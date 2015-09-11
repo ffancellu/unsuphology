@@ -4,6 +4,7 @@ import Cons
 import pickle
 import os
 import random
+import logging
 
 
 def generateFixes(vocabulary, generateNew=False):
@@ -21,7 +22,7 @@ def generateNewFixes(vocabulary):
 
     for i in range(0, len(vocabulary)):
         if i % 100 == 0:
-            print "creating _prefixes and suffixes, progress: " + str(i) + " out of " + str(len(vocabulary))
+            logging.info("creating _prefixes and suffixes, progress: " + str(i) + " out of " + str(len(vocabulary)))
         for j in range(0, len(vocabulary)):
             if i < j:
                 if len(vocabulary[i]) < len(vocabulary[j]):
