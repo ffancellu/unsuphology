@@ -44,14 +44,16 @@ def find_ordered_common_subseqs(w1,w2):
     return common_seqs
 
 def get_affixes(w1,w2,common_seqs):
+    w1_sub = None
+    w2_sub = None
     if common_seqs!=[]:
         if len(common_seqs)<Cons.MAXLENSEQLIST:
             if len(common_seqs[0])>Cons.MINLENCMNSUBSTR:
-                print len(common_seqs),len(common_seqs[0])
                 regex = '|'.join(common_seqs)
                 w1_sub = re.sub(regex,"_",w1)
                 w2_sub = re.sub(regex,"_",w2)
-                print "r::%s:%s for %s,%s" % (w1_sub,w2_sub,w1,w2)
+                
+    return w1_sub,w2_sub
 
 def gets_vocabulary(filepath):
     f = codecs.open(filepath,'rb','utf8')
@@ -66,27 +68,55 @@ def gets_vocabulary(filepath):
         i+=1
     return set(vocabulary)
 
-def wrapper(filepath):
-    # print "Fetch vocabulary..."
-    voc = list(gets_vocabulary(filepath))
-    # print "Vocabulary fecthed!"
-    # print "vocabulary length: ",len(voc)
-    # print "Dealing with suffixes..."
-    # number_tup =0
-    # for tup in yield_combinations(voc):
-    # w1,w2 = "kutub","kitab"
-    # cs = find_ordered_common_subseq(w1,w2)
-    # get_affixes(w1,w2,cs)
-    voc_len = len(voc)
+def fetch(voc,store=True,store_how="pickle"):
+    trie = {}
     for i in xrange(voc_len):
         for j in xrange(voc_len):
             if i<j:
+                if number_tup % 100==0:
+                    print "Generating rule for tuple %d..." % number_tup
                 w1,w2 = voc[i],voc[j]
                 cs = find_ordered_common_subseqs(voc[i],voc[j])
-                get_affixes(w1,w2,cs)
-    #     generate_fixes(tup[0],tup[1])
-    #     number_tup+=1
-    # print "Dealt with suffixes!"
+                w1_sub,w2_sub = get_affixes(w1,w2,cs)
+                if w1_sub!=None and w2_sub!=None:
+                    nested_voc = trie.setdefault(w1_sub,{})
+                    nested_voc.setdefault(w2_sub,[]).append((w1,w2))
+                    
+        number_tup+=1
+
+    if store_how=="pickle":  
+        print "Pickling results..."
+        with open(Cons.FIXESFILENAME, 'wb') as f:
+            pickle.dump(trie, f)
+    if store_how=="write_txt":
+        print "Writing to file..."
+        with open(Cons.RULESTXTFILENAME, 'wb','utf8') as f:
+            for key in trie.iterkeys():
+                for key_n in trie[key].iterkeys():
+                    items = trie[key][key_n]
+                    f.write("rule::%s:%s %d\n" % (key,key_n,len(items)))
+                    for item in items:
+                        f.write("\t%s %s\n" % (item[0],item[1]))
+
+    if store_how=="std_err":
+        print "Printing to stdErr..."
+        for key in trie.iterkeys():
+            for key_n in trie[key].iterkeys():
+                items = trie[key][key_n]
+                print "rule::%s:%s %d\n" % (key,key_n,len(items))
+                for item in items:
+                        print "\t%s %s\n" % (item[0],item[1])
+
+def wrapper(filepath):
+    print "Fetch vocabulary..."
+    voc = list(gets_vocabulary(filepath))
+    voc_len = len(voc)
+    print "Vocabulary fecthed!"
+    print "vocabulary length: ",len(voc)
+    print "Dealing with suffixes..."
+    number_tup =0
+    fetch(voc)
+    print "Dealt with suffixes!"
 
 if __name__=="__main__":
     wrapper("/Users/ffancellu/Desktop/orwell.en")
