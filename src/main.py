@@ -25,5 +25,4 @@ print rules
 # print model.doesnt_match("winston julia brother goldstein".split())
 # print model.similarity("winston", "julia")
 
-# print "Time: " + str(time.time() - start)
-
+print "Time: " + str(time.time() - start)
