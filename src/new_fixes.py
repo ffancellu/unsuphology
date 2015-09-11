@@ -8,15 +8,19 @@ import random
 
 
 def generateFixes(vocabulary, generateNew=False):
-    if os.path.isfile(Cons.RULESFILENAME) and not generateNew:
-        print "Fixes already generated!"
+    if os.path.isfile(Cons.FIXESFILENAME) and not generateNew:
+        with open(Cons.FIXESFILENAME, 'r') as f:
+            fixes = pickle.load(f)
+            return fixes[0], fixes[1]
     else:
-        return generateNewFixes(vocabulary,"write_file")
+        return generateNewFixes(vocabulary)
 
 
-def generateNewFixes(vocabulary,output="pickle"):
+def generateNewFixes(vocabulary,output=["pickle","write_file","return"]):
     prefixes = {}
     suffixes = {}
+    reduplications = {}
+    infixes = {}
 
     for i in range(0, len(vocabulary)):
         if i % 100 == 0:
@@ -96,6 +100,11 @@ def generateNewFixes(vocabulary,output="pickle"):
                         else:
                             suffixes[pre1][pre2].append([w1, w2])
 
+                # extract reduplication pattern
+                # w1,w2
+                if w1 in w2:
+
+
 
     # remove rare prefix rules
     prefixes2 = {}
@@ -121,10 +130,12 @@ def generateNewFixes(vocabulary,output="pickle"):
 
     suffixes = suffixes2
 
-    if output=="pickle":
+    if "pickle" in output:
         pickle_results(prefixes,suffixes)
-    elif output=="write_file":
+    elif "write_file" in output:
         print_rules_to_file(prefixes,suffixes)
+    elif "return" in output:
+        return prefixes,affixes
 
 def pickle_results(prefixes,suffixes):
     print "Pickling results!"
@@ -175,5 +186,5 @@ def wrapper(filepath):
     print "Dealt with suffixes!"
 
 if __name__=="__main__":
-    wrapper(Cons.RULESFILENAME)
+    wrapper(Cons.DATAFILENAME)
 

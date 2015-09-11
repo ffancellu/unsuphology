@@ -15,8 +15,6 @@ def getVectorModel(generateNew=False):
 
 def generateModel():
     with open(Cons.DATAFILENAME, "r") as myfile:
-        #documents = re.sub('#+', ' ', myfile.read()).replace('\n', '#').replace('\'', '').lower()
-        #documents = re.sub('[^a-zA-Z#]+', ' ', documents).split('#')
         documents = myfile.read().lower().split('\n')
 
     texts = [word.split() for word in documents]

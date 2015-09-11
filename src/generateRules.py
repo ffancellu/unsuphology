@@ -4,7 +4,6 @@ import Cons, Queue, gensim, numpy
 
 kthneighbor = {}
 
-
 def generate(prefixes, suffixes, model):
     rules = []
     for pre1, r in prefixes.iteritems():
@@ -15,7 +14,6 @@ def generate(prefixes, suffixes, model):
     for pre1, r in suffixes.iteritems():
         for pre2, support in r.iteritems():
             rules.append(["suffix", pre1, pre2, computeHitRate(support, model)])
-
             print ["suffix", pre1, pre2, computeHitRate(support, model)]
 
     return rules
