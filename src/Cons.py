@@ -3,7 +3,8 @@ __author__ = "Tom Kocmi"
 CORPUSNAME = "EN"
 ISINDIRECTORY = False #in case that corpus is stored in separate directory instead of one file
 
-RULESFILENAME = "models/RulesTxt-%s.data" % (CORPUSNAME)
+
+RULESTXTFILENAME = "models/RulesTxt-%s.data" % (CORPUSNAME)
 MODELFILENAME = "models/VectorModel-%s.data" % (CORPUSNAME) #model filename
 FIXESFILENAME = "models/Fixes-%s.data" % (CORPUSNAME) #filename of saved prefixes and suffixes
 DATAFILENAME = "models/%s.txt" % (CORPUSNAME) #filename of training data, it should have sentence per line
@@ -23,3 +24,7 @@ RARERULES = 10  # minimal number of pairs in support set of the rule
 HITTHRESHOLD = 100  # consider it that the rule applies in case that the generated vector is within HITTHRESHOLD nearest neighbors
 MAXSUPPORTSIZE = 1000  # maximal size of support set. In Soricut paper equals 1000. Downsample if more supports
 MEANINGPRESERVINGTHRESHOLD = 0.5  # if cosine similarity of the support set of the rule is smaller than this criterio, do not consider it
+
+
+MINLENCMNSUBSTR=3 #allow only common substring on len > 3
+MAXLENSEQLIST= 2

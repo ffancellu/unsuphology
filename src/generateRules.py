@@ -8,24 +8,24 @@ kthneighbor = {}
 def generate(prefixes, suffixes, model, vocabulary):
     rules = []
     print "evaluating prefixes"
-    i=0
+    i = 0
     for pre1, r in prefixes.iteritems():
         for pre2, support in r.iteritems():
-            if len(support)<100:
+            if len(support) < 100:
                 continue
             # if pre1!="" or pre2!="un": continue
             rules.append(["prefix", pre1, pre2, computeHitRate(support, model, vocabulary)])
             logging.info(rules[-1])
-        i+=1
+        i += 1
     print "prefixes evaluated"
-    i=0
+    i = 0
     for pre1, r in suffixes.iteritems():
         for pre2, support in r.iteritems():
-            if len(support)<100:
+            if len(support) < 100:
                 continue
             rules.append(["suffix", pre1, pre2, computeHitRate(support, model, vocabulary)])
             logging.info(rules[-1])
-        i+=1
+        i += 1
 
     return rules
 
@@ -44,7 +44,7 @@ def computeHitRate(support, model, vocabulary):
                     kthneighbor[pair1[1]] = getKthClosestNeighbor(pair1[1], model, Cons.HITTHRESHOLD, vocabulary)
                 if cos > kthneighbor[pair1[1]]:
                     hitrate += 1
-                #print str(pair1) + " " + str(pair2) + str(cos) + " " + str(kthneighbor[pair1[1]])
+                # print str(pair1) + " " + str(pair2) + str(cos) + " " + str(kthneighbor[pair1[1]])
                 sum += 1
 
     return hitrate / sum
@@ -52,7 +52,7 @@ def computeHitRate(support, model, vocabulary):
 
 def getKthClosestNeighbor(word, model, K, vocabulary):
     pq = Queue.PriorityQueue(K)
-    for w2 in vocabulary: #model.vocab.keys()
+    for w2 in vocabulary:  # model.vocab.keys()
         if word == w2:
             continue;
         sim = -numpy.dot(gensim.matutils.unitvec(model[word]), gensim.matutils.unitvec(model[w2]))
