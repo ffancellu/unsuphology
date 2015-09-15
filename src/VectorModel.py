@@ -19,10 +19,20 @@ def getVectorModel(generateNew=False):
 
 
 def generateModel():
-    with open(Cons.DATAFILENAME, "r") as myfile:
-        documents = myfile.read().lower().split('\n')
+    class MySentences(object):
+        def __init__(self, dirname):
+            self.dirname = dirname
 
-    texts = [word.split() for word in documents]
-    model = gensim.models.Word2Vec(texts, min_count=Cons.MINOCCURENCES, size=Cons.NNSIZE, workers=Cons.NUMCORES)
+        def __iter__(self):
+            if Cons.ISINDIRECTORY:
+                for fname in os.listdir(self.dirname):
+                    for line in open(os.path.join(self.dirname, fname)):
+                        yield line.split()
+            else:
+                for line in open(self.dirname):
+                    yield line.split()
+
+    sentences = MySentences(Cons.DATAFILENAME) # a memory-friendly iterator
+    model = gensim.models.Word2Vec(sentences, min_count=Cons.MINOCCURENCES, size=Cons.NNSIZE, workers=Cons.NUMCORES)
     model.save(Cons.MODELFILENAME)
     return model
