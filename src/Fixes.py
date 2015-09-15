@@ -5,6 +5,7 @@ import pickle
 import os
 import random
 import logging
+import Queue
 
 
 def generateFixes(vocabulary, generateNew=False):
@@ -39,16 +40,15 @@ def generateNewFixes(vocabulary):
                         if fix == 1:
                             addRule = False
                         break
-                    f+=1
+                    f += 1
 
                 if addRule:
-                    if f==len(w1):
+                    if f == len(w1):
                         pre1 = ""
                         pre2 = w2[:-f]
                     else:
                         pre1 = w1[:-f]
                         pre2 = w2[:-f]
-
 
                     if len(pre2) <= Cons.MAXFIX:
                         if (len(pre1) == len(pre2)) and pre1 > pre2:
@@ -65,17 +65,18 @@ def generateNewFixes(vocabulary):
                             prefixes[pre1][pre2] = [[w1, w2]]
                         else:
                             prefixes[pre1][pre2].append([w1, w2])
+
                 # extract suffixes
                 addRule = True
-                f=0
+                f = 0
                 for fix in range(0, len(w1)):
                     if w1[fix] != w2[fix]:
                         if fix == 0:
                             addRule = False
                         break
-                    f+=1
+                    f += 1
                 if addRule:
-                    if f==len(w1):
+                    if f == len(w1):
                         pre1 = ""
                         pre2 = w2[f:]
                     else:
@@ -97,6 +98,7 @@ def generateNewFixes(vocabulary):
                         else:
                             suffixes[pre1][pre2].append([w1, w2])
 
+    logging.info("generated rules " + str(len(prefixes)) + " " + str(len(suffixes)))
     # remove rare prefix rules
     prefixes2 = {}
     for pre1, r in prefixes.iteritems():
@@ -120,7 +122,7 @@ def generateNewFixes(vocabulary):
                 suffixes2[pre1][pre2] = downsample(support)
 
     suffixes = suffixes2
-
+    logging.info("cleaned rules " + str(len(prefixes)) + " " + str(len(suffixes)))
     # save in to the file
     with open(Cons.FIXESFILENAME, 'w') as f:
         pickle.dump([prefixes, suffixes], f)
@@ -128,7 +130,28 @@ def generateNewFixes(vocabulary):
     return prefixes, suffixes
 
 
+# this function will generate random subset from the set
 def downsample(supportset):
     if len(supportset) < Cons.MAXSUPPORTSIZE:
         return supportset
     return random.sample(supportset, Cons.MAXSUPPORTSIZE)
+
+
+# this function returns smaller vocabulary without less occuring words
+def downsampleVocabulary(model, max):
+    pq = Queue.PriorityQueue(len(model.vocab))
+    for word in model.vocab.items():
+        pq.put(-word[1].count)
+
+    for i in range(0, max):
+        pq.get()
+
+    optimalCount = -pq.get()
+    logging.info(optimalCount)
+    vocabulary = []
+    for word in model.vocab.items():
+        if word[1].count >= optimalCount:
+            vocabulary.append(word[0])
+
+    logging.info("Vocabulary downsampled to " + str(len(vocabulary)) + " words")
+    return vocabulary
